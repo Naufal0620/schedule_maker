@@ -1,7 +1,9 @@
 <div class="space-y-6">
     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
         <div class="flex items-center mb-4">
-            <div class="bg-green-100 p-2 rounded-lg text-green-600 mr-3">🔍</div>
+            <div class="bg-green-100 w-10 h-10 flex items-center justify-center rounded-lg text-green-600 mr-3">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
             <h3 class="font-bold text-gray-800 text-lg">Cari Ruangan Kosong</h3>
         </div>
         
@@ -37,25 +39,32 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" name="cari_kosong" value="1" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-xl text-sm transition shadow-md">
-                Cari Ruangan
+            <button type="submit" name="cari_kosong" value="1" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-xl text-sm transition shadow-md flex justify-center items-center">
+                <i class="fa-solid fa-search mr-2"></i> Cari Ruangan
             </button>
         </form>
     </div>
 
     <?php if(isset($ruangan_kosong)): ?>
-        <div class="bg-green-50 p-4 rounded-xl border border-green-100">
-            <p class="text-xs text-green-700 mb-2 font-medium">
-                Ketersediaan pada <?= $info_cari_kosong['hari']; ?>, <?= substr($info_cari_kosong['mulai'], 0, 5); ?> - <?= substr($info_cari_kosong['selesai'], 0, 5); ?>:
+        <div class="bg-white p-5 rounded-2xl border-t-4 border-green-500 shadow-sm">
+            <p class="text-xs text-gray-500 mb-4 font-medium text-center">
+                Ketersediaan: <span class="text-green-600 font-bold"><?= $info_cari_kosong['hari']; ?>, <?= substr($info_cari_kosong['mulai'], 0, 5); ?> - <?= substr($info_cari_kosong['selesai'], 0, 5); ?></span>
             </p>
+            
             <?php if(empty($ruangan_kosong)): ?>
-                <p class="text-sm font-bold text-red-500">Waduh, semua ruangan penuh! 😔</p>
+                <div class="flex flex-col items-center justify-center py-6">
+                    <i class="fa-regular fa-face-frown-open text-4xl text-red-400 mb-3"></i>
+                    <p class="text-sm font-bold text-red-500">Waduh, semua ruangan penuh!</p>
+                </div>
             <?php else: ?>
-                <div class="flex flex-wrap gap-2">
+                <div class="grid grid-cols-3 gap-3">
                     <?php foreach($ruangan_kosong as $rk): ?>
-                        <span class="bg-white text-green-700 border border-green-200 text-sm font-bold px-3 py-1.5 rounded-lg shadow-sm">
-                            <?= $rk->kode; ?>
-                        </span>
+                        <div class="bg-green-50 border border-green-200 rounded-xl p-3 flex flex-col items-center justify-center shadow-sm hover:bg-green-100 transition">
+                            <i class="fa-solid fa-door-open text-green-600 mb-1 text-lg"></i>
+                            <span class="text-green-800 font-bold text-xs text-center">
+                                <?= $rk->kode; ?>
+                            </span>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -66,8 +75,10 @@
 
     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
         <div class="flex items-center mb-4">
-            <div class="bg-blue-100 p-2 rounded-lg text-blue-600 mr-3">📍</div>
-            <h3 class="font-bold text-gray-800 text-lg">Lihat Jadwal Ruangan</h3>
+            <div class="bg-blue-100 w-10 h-10 flex items-center justify-center rounded-lg text-blue-600 mr-3">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <h3 class="font-bold text-gray-800 text-lg">Lihat Jadwal Ruang</h3>
         </div>
         
         <form method="GET" action="<?= site_url('ruangan'); ?>">
@@ -80,8 +91,8 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <button type="submit" name="cari_jadwal" value="1" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-xl text-sm transition shadow-md">
-                Lihat Jadwal
+            <button type="submit" name="cari_jadwal" value="1" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-xl text-sm transition shadow-md flex justify-center items-center">
+                <i class="fa-regular fa-calendar-check mr-2"></i> Lihat Jadwal
             </button>
         </form>
     </div>
@@ -93,7 +104,10 @@
             </h4>
             
             <?php if(empty($jadwal_ruang)): ?>
-                <p class="text-center text-sm text-gray-500 py-4">Belum ada jadwal di ruangan ini.</p>
+                <div class="flex flex-col items-center justify-center py-6 text-gray-400">
+                    <i class="fa-solid fa-mug-hot text-3xl mb-2"></i>
+                    <p class="text-sm">Belum ada jadwal di ruangan ini.</p>
+                </div>
             <?php else: ?>
                 <?php foreach($jadwal_ruang as $hari => $list_matkul): ?>
                     <div class="mb-3 mt-4 first:mt-0">
@@ -110,11 +124,14 @@
                                     <h3 class="text-gray-800 font-bold text-sm leading-tight max-w-[70%]">
                                         <?= $row->nama_matkul; ?> <span class="text-xs text-blue-500">(<?= $row->nama_kelas; ?>)</span>
                                     </h3>
-                                    <span class="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-bold">
+                                    <span class="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-bold flex items-center">
+                                        <i class="fa-regular fa-clock mr-1 text-gray-400"></i>
                                         <?= substr($row->jam_mulai, 0, 5); ?> - <?= substr($row->jam_selesai, 0, 5); ?>
                                     </span>
                                 </div>
-                                <p class="text-xs text-gray-500 mt-1">👨‍🏫 <?= $row->kode_dosen; ?></p>
+                                <p class="text-xs text-gray-500 mt-1 flex items-center">
+                                    <i class="fa-solid fa-chalkboard-user mr-1 text-gray-400"></i> <?= $row->kode_dosen; ?>
+                                </p>
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -123,6 +140,4 @@
             <?php endif; ?>
         </div>
     <?php endif; ?>
-    
-    <div class="h-6"></div>
 </div>

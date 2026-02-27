@@ -1,5 +1,6 @@
 <?php if(empty($grouped_jadwal)): ?>
-    <div class="text-center py-10 text-gray-400">
+    <div class="text-center py-12 text-gray-400 flex flex-col items-center justify-center">
+        <i class="fa-regular fa-calendar-xmark text-5xl mb-4 text-gray-300"></i>
         <p>Belum ada jadwal kuliah.</p>
     </div>
 <?php else: ?>
@@ -23,17 +24,17 @@
                         <h3 class="text-gray-800 font-bold text-base leading-tight">
                             <?= $row->nama_matkul; ?>
                         </h3>
-                        <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-500 font-bold">
-                            <?= substr($row->jam_mulai, 0, 5); ?>
+                        <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-600 font-bold flex items-center whitespace-nowrap ml-2">
+                            <i class="fa-regular fa-clock mr-1 text-gray-400"></i> <?= substr($row->jam_mulai, 0, 5); ?>
                         </span>
                     </div>
                     
                     <div class="flex justify-between items-center mt-2">
-                        <p class="text-xs text-gray-500">
-                            👨‍🏫 <?= $row->kode_dosen; ?>
+                        <p class="text-xs text-gray-500 flex items-center">
+                            <i class="fa-solid fa-chalkboard-user mr-1.5 text-gray-400"></i> <?= $row->kode_dosen; ?>
                         </p>
-                        <p class="text-xs text-gray-400 font-medium">
-                            📍 <?= $row->kode_ruang; ?>
+                        <p class="text-xs text-gray-500 font-medium flex items-center">
+                            <i class="fa-solid fa-location-dot mr-1 text-blue-400"></i> <?= $row->kode_ruang; ?>
                         </p>
                     </div>
                 </div>

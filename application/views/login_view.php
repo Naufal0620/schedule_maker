@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Jadwal Kuliah</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100 h-screen flex items-center justify-center px-4">
 
     <div class="max-w-sm w-full bg-white rounded-2xl shadow-lg p-8">
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">Selamat Datang 👋</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Selamat Datang <i class="fa-solid fa-hand-sparkles text-yellow-500 ml-1"></i></h1>
             <p class="text-gray-500 text-sm">Silakan login untuk melihat jadwal.</p>
         </div>
 
