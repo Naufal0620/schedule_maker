@@ -34,9 +34,7 @@ class Dashboard extends CI_Controller {
         
         $data['content'] = 'dashboard_view';
         $data['hari_ini'] = $hari_ini;
-        $data['data'] = [
-            'jadwal' => $this->db->get()->result(),
-        ];
+        $data['jadwal'] = $this->db->get()->result();
         
         $this->load->view('layout_view', $data);
     }

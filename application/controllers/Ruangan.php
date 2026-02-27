@@ -54,36 +54,51 @@ class Ruangan extends CI_Controller {
         $data['ruangan_kosong'] = null;
         if ($this->input->get('cari_kosong')) {
             $hari = $this->input->get('hari');
-            $jam_mulai = $this->input->get('jam_mulai');     // ID dari tabel waktu
-            $jam_selesai = $this->input->get('jam_selesai'); // ID dari tabel waktu
+            $jam_mulai_id = $this->input->get('jam_mulai');     
+            $jam_selesai_id = $this->input->get('jam_selesai'); 
 
-            // Ambil urutan jam_ke untuk rentang waktu
-            $w_start = $this->db->get_where('waktu', ['id' => $jam_mulai])->row()->jam_ke;
-            $w_end   = $this->db->get_where('waktu', ['id' => $jam_selesai])->row()->jam_ke;
+            // Ambil objek waktu dari database terlebih dahulu
+            $waktu_mulai = $this->db->get_where('waktu', ['id' => $jam_mulai_id])->row();
+            $waktu_selesai = $this->db->get_where('waktu', ['id' => $jam_selesai_id])->row();
 
-            // Subquery: Cari ruangan yang SEDANG DIPAKAI pada hari dan rentang waktu tsb
-            $this->db->select('id_ruangan');
-            $this->db->from('jadwal j');
-            $this->db->join('waktu w', 'j.id_waktu = w.id');
-            $this->db->where('j.hari', $hari);
-            $this->db->where("w.jam_ke >=", $w_start);
-            $this->db->where("w.jam_ke <=", $w_end);
-            $ruangan_terpakai = $this->db->get_compiled_select();
+            // Pastikan data waktu benar-benar ditemukan (tidak null) agar terhindar dari error non-object
+            if ($waktu_mulai && $waktu_selesai) {
+                
+                $w_start = $waktu_mulai->jam_ke;
+                $w_end   = $waktu_selesai->jam_ke;
 
-            // Query Utama: Tampilkan semua ruangan KECUALI yang terpakai di atas
-            if (!empty($ruangan_terpakai)) {
-                $this->db->where("id NOT IN ($ruangan_terpakai)", NULL, FALSE);
-            }
+                // Subquery: Cari ruangan yang SEDANG DIPAKAI pada hari dan rentang waktu tsb
+                $this->db->select('id_ruangan');
+                $this->db->from('jadwal j');
+                $this->db->join('waktu w', 'j.id_waktu = w.id');
+                $this->db->where('j.hari', $hari);
+                $this->db->where("w.jam_ke >=", $w_start);
+                $this->db->where("w.jam_ke <=", $w_end);
+                $ruangan_terpakai = $this->db->get_compiled_select();
 
-            $data['content'] = 'ruangan_view'; // Memanggil view konten baru
-            $data['data'] = [
-                'info_cari_kosong' => [
+                // Query Utama: Tampilkan semua ruangan KECUALI yang terpakai di atas
+                if (!empty($ruangan_terpakai)) {
+                    $this->db->where("id NOT IN ($ruangan_terpakai)", NULL, FALSE);
+                }
+                
+                $data['ruangan_kosong'] = $this->db->order_by('kode', 'ASC')->get('ruangan')->result();
+                
+                // Simpan info pencarian untuk ditampilkan di view menggunakan data yang sudah ada
+                $data['info_cari_kosong'] = [
                     'hari' => $hari,
-                    'mulai' => $this->db->get_where('waktu', ['id' => $jam_mulai])->row()->jam_mulai,
-                    'selesai' => $this->db->get_where('waktu', ['id' => $jam_selesai])->row()->jam_selesai
-                ],
-                'ruangan_kosong' => $this->db->order_by('kode', 'ASC')->get('ruangan')->result(),
-            ];
+                    'mulai' => $waktu_mulai->jam_mulai,
+                    'selesai' => $waktu_selesai->jam_selesai
+                ];
+                
+            } else {
+                // Fallback jika terjadi manipulasi form atau error pengiriman data
+                $data['ruangan_kosong'] = [];
+                $data['info_cari_kosong'] = [
+                    'hari' => $hari,
+                    'mulai' => '-',
+                    'selesai' => '-'
+                ];
+            }
         }
 
         $this->load->view('layout_view', $data);

@@ -23,7 +23,7 @@
 
     <!-- Panggil konten di sini -->
     <div class="px-5 py-4">
-        <?php $this->load->view($content, $data) ?>
+        <?php $this->load->view($content) ?>
     </div>
 
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-50">

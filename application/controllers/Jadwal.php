@@ -37,9 +37,7 @@ class Jadwal extends CI_Controller {
 
         $data['hari_ini'] = 'JADWAL'; // Judul Header
         $data['content'] = 'jadwal_view'; // Memanggil view konten baru
-        $data['data'] = [
-            'grouped_jadwal' => $grouped_jadwal,
-        ];
+        $data['grouped_jadwal'] = $grouped_jadwal;
         
         $this->load->view('layout_view', $data);
     }
